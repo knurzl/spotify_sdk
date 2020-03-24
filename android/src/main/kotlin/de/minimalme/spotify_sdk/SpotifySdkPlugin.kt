@@ -84,6 +84,7 @@ class SpotifySdkPlugin(private val registrar: Registrar) : MethodCallHandler, Pl
 
     private val paramClientId = "clientId"
     private val paramRedirectUrl = "redirectUrl"
+    private val paramShowDialog = "paramShowDialog"
     private val paramSpotifyUri = "spotifyUri"
     private val paramImageUri = "imageUri"
     private val paramImageDimension = "imageDimension"
@@ -128,7 +129,7 @@ class SpotifySdkPlugin(private val registrar: Registrar) : MethodCallHandler, Pl
         when (call.method) {
             //connecting to spotify
             methodConnectToSpotify -> connectToSpotify(call.argument(paramClientId), call.argument(paramRedirectUrl), result)
-            methodGetAuthenticationToken -> getAuthenticationToken(call.argument(paramClientId), call.argument(paramRedirectUrl), result)
+            methodGetAuthenticationToken -> getAuthenticationToken(call.argument(paramClientId), call.argument(paramRedirectUrl), call.argument(paramShowDialog), result)
             methodLogoutFromSpotify -> logoutFromSpotify(result)
             //player api calls
             methodGetCrossfadeState -> spotifyPlayerApi?.getCrossfadeState()
@@ -254,7 +255,7 @@ class SpotifySdkPlugin(private val registrar: Registrar) : MethodCallHandler, Pl
         }
     }
 
-    private fun getAuthenticationToken(clientId: String?, redirectUrl: String?, result: Result) {
+    private fun getAuthenticationToken(clientId: String?, redirectUrl: String?, showDialog: Boolean?, result: Result) {
         if (registrar.activity() == null) {
             throw IllegalStateException("connectToSpotify needs a foreground activity")
         }
@@ -266,6 +267,7 @@ class SpotifySdkPlugin(private val registrar: Registrar) : MethodCallHandler, Pl
 
             val builder = AuthorizationRequest.Builder(clientId, AuthorizationResponse.Type.TOKEN, redirectUrl)
             builder.setScopes(scope)
+            builder.setShowDialog(showDialog)
             val request = builder.build()
 
             AuthorizationClient.openLoginActivity(registrar.activity(), requestCodeAuthentication, request)

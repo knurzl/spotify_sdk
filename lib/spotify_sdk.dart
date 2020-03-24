@@ -62,6 +62,7 @@ class SpotifySdk {
   // params
   static const String _paramClientId = "clientId";
   static const String _paramRedirectUrl = "redirectUrl";
+  static const String _paramShowDialog = "showDialog";
   static const String _paramSpotifyUri = "spotifyUri";
   static const String _paramImageUri = "imageUri";
   static const String _paramImageDimension = "imageDimension";
@@ -93,11 +94,12 @@ class SpotifySdk {
   /// Throws a [PlatformException] if retrieving the authentication token failed.
   /// Throws a [MissingPluginException] if the method is not implemented on the native platforms.
   static Future<String> getAuthenticationToken(
-      {@required String clientId, @required String redirectUrl}) async {
+      {@required String clientId, @required String redirectUrl, [bool showDialog]}) async {
     try {
+      showDialog = showDialog == null ? true : showDialog;
       final String authorization = await _channel.invokeMethod(
           _methodGetAuthenticationToken,
-          {_paramClientId: clientId, _paramRedirectUrl: redirectUrl});
+          {_paramClientId: clientId, _paramRedirectUrl: redirectUrl, _paramShowDialog = showDialog});
       return authorization;
     } on Exception catch (e) {
       _logException(_methodGetAuthenticationToken, e);
