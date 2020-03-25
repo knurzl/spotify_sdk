@@ -94,9 +94,8 @@ class SpotifySdk {
   /// Throws a [PlatformException] if retrieving the authentication token failed.
   /// Throws a [MissingPluginException] if the method is not implemented on the native platforms.
   static Future<String> getAuthenticationToken(
-      {@required String clientId, @required String redirectUrl, bool showDialog}) async {
+      {@required String clientId, @required String redirectUrl, bool showDialog = true}) async {
     try {
-      showDialog = showDialog == null ? true : showDialog;
       final String authorization = await _channel.invokeMethod(
           _methodGetAuthenticationToken,
           {_paramClientId: clientId, _paramRedirectUrl: redirectUrl, _paramShowDialog: showDialog});
