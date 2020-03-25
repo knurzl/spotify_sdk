@@ -255,7 +255,7 @@ class SpotifySdkPlugin(private val registrar: Registrar) : MethodCallHandler, Pl
         }
     }
 
-    private fun getAuthenticationToken(clientId: String?, redirectUrl: String?, showDialog: Boolean?, result: Result) {
+    private fun getAuthenticationToken(clientId: String?, redirectUrl: String?, showDialog: Boolean, result: Result) {
         if (registrar.activity() == null) {
             throw IllegalStateException("connectToSpotify needs a foreground activity")
         }
