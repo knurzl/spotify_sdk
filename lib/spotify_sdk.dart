@@ -99,7 +99,7 @@ class SpotifySdk {
       showDialog = showDialog == null ? true : showDialog;
       final String authorization = await _channel.invokeMethod(
           _methodGetAuthenticationToken,
-          {_paramClientId: clientId, _paramRedirectUrl: redirectUrl, _paramShowDialog = showDialog});
+          {_paramClientId: clientId, _paramRedirectUrl: redirectUrl, _paramShowDialog: showDialog});
       return authorization;
     } on Exception catch (e) {
       _logException(_methodGetAuthenticationToken, e);
